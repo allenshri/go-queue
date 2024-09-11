@@ -1,6 +1,8 @@
 package kq
 
-import "github.com/zeromicro/go-zero/core/service"
+import (
+	"github.com/zeromicro/go-zero/core/service"
+)
 
 const (
 	firstOffset = "first"
@@ -23,4 +25,5 @@ type KqConf struct {
 	Password      string `json:",optional"`
 	ForceCommit   bool   `json:",default=true"`
 	CommitInOrder bool   `json:",default=false"`
+	SaslMechanism string `json:",default=plain"`
 }

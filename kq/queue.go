@@ -5,6 +5,8 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
+	"github.com/segmentio/kafka-go/sasl"
+	"github.com/segmentio/kafka-go/sasl/scram"
 	"io"
 	"log"
 	"os"
@@ -129,11 +131,34 @@ func newKafkaQueue(c KqConf, handler ConsumeHandler, options queueOptions) queue
 		QueueCapacity:  options.queueCapacity,
 	}
 	if len(c.Username) > 0 && len(c.Password) > 0 {
-		readerConfig.Dialer = &kafka.Dialer{
-			SASLMechanism: plain.Mechanism{
+		var mechanism sasl.Mechanism
+		if c.SaslMechanism == "PLAIN" {
+			mechanism = plain.Mechanism{
 				Username: c.Username,
 				Password: c.Password,
-			},
+			}
+		} else {
+			var algorithm scram.Algorithm
+			switch c.SaslMechanism {
+			case "scram-sha-256":
+				algorithm = scram.SHA256
+			case "scram-sha-512":
+				algorithm = scram.SHA512
+			default:
+				log.Fatalf("unknown sasl mechanism: %s", c.SaslMechanism)
+			}
+
+			var err error
+			mechanism, err = scram.Mechanism(algorithm, c.Username, c.Password)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+		if mechanism == nil {
+			log.Fatal("invalid sasl mechanism")
+		}
+		readerConfig.Dialer = &kafka.Dialer{
+			SASLMechanism: mechanism,
 		}
 	}
 	if len(c.CaFile) > 0 {
