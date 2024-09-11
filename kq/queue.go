@@ -159,6 +159,9 @@ func newKafkaQueue(c KqConf, handler ConsumeHandler, options queueOptions) queue
 		}
 		readerConfig.Dialer = &kafka.Dialer{
 			SASLMechanism: mechanism,
+			TLS: &tls.Config{
+				InsecureSkipVerify: true,
+			},
 		}
 	}
 	if len(c.CaFile) > 0 {
