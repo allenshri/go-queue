@@ -132,7 +132,7 @@ func newKafkaQueue(c KqConf, handler ConsumeHandler, options queueOptions) queue
 	}
 	if len(c.Username) > 0 && len(c.Password) > 0 {
 		var mechanism sasl.Mechanism
-		if c.SaslMechanism == "PLAIN" {
+		if c.SaslMechanism == "plain" || c.SaslMechanism == "PLAIN" {
 			mechanism = plain.Mechanism{
 				Username: c.Username,
 				Password: c.Password,
