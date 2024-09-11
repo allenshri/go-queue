@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/allenshri/go-queue/stanq"
 	"github.com/nats-io/stan.go"
-	"github.com/zeromicro/go-queue/stanq"
 )
 
 type MyConsumer struct {
