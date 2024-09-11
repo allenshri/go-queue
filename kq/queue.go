@@ -12,12 +12,12 @@ import (
 	"os"
 	"time"
 
+	"github.com/allenshri/go-queue/kq/internal"
 	"github.com/segmentio/kafka-go"
 	_ "github.com/segmentio/kafka-go/gzip"
 	_ "github.com/segmentio/kafka-go/lz4"
 	"github.com/segmentio/kafka-go/sasl/plain"
 	_ "github.com/segmentio/kafka-go/snappy"
-	"github.com/zeromicro/go-queue/kq/internal"
 	"github.com/zeromicro/go-zero/core/contextx"
 	"github.com/zeromicro/go-zero/core/logc"
 	"github.com/zeromicro/go-zero/core/logx"
